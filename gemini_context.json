@@ -1,0 +1,94 @@
+
+{
+  "user_profile": {
+    "skill_level": "Programador con experiencia, pero nuevo en AdonisJS.",
+    "learning_style": {
+      "metaphor": "Arquitecto de Software (IA) guiando al Desarrollador (Usuario).",
+      "summary": "El usuario prefiere un aprendizaje práctico donde él ejecuta el código. La IA debe explicar la teoría, dar instrucciones claras y el código a implementar, verificar el trabajo del usuario y luego profundizar en la explicación de los conceptos subyacentes.",
+      "flow": [
+        "1. La IA explica el concepto y el objetivo.",
+        "2. La IA proporciona el comando o el fragmento de código, pero no lo ejecuta.",
+        "3. El usuario implementa el cambio y confirma que está 'listo'.",
+        "4. La IA verifica el trabajo leyendo el archivo modificado.",
+        "5. La IA explica a fondo el código y los conceptos implicados.",
+        "6. Se propone el siguiente paso."
+      ]
+    }
+  },
+  "project_context": {
+    "framework": "AdonisJS v6",
+    "key_feature": "Usa el validador VineJS por defecto.",
+    "goal": "Construir una aplicación web completa, empezando por un sistema de login y autenticación."
+  },
+  "session_state": {
+    "status": "Pausado. Listo para empezar el capítulo de 'Autenticación Real'.",
+    "last_file_modified": "resources/views/pages/auth/login.edge",
+    "last_concept_mastered": "Ciclo completo de validación de formularios con feedback al usuario (CSRF, VineJS, Flash Messages)."
+  },
+  "learning_path": {
+    "completed_chapters": [
+      {
+        "id": 1,
+        "title": "Introducción y Limpieza",
+        "key_concepts": [
+          "Análisis de la estructura de carpetas de AdonisJS (app, config, start, resources).",
+          "Lectura y modificación del archivo de rutas 'start/routes.ts'.",
+          "Eliminación de archivos de vista .edge innecesarios."
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Flujo MVC Básico",
+        "key_concepts": [
+          "Uso de 'node ace make:controller' para crear controladores.",
+          "Creación de nuevas vistas .edge y estructura de carpetas en 'resources/views'.",
+          "Conexión de una ruta a un método específico de un controlador.",
+          "Renderizado de una vista desde un controlador usando 'view.render()'."
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Seguridad del Formulario (CSRF)",
+        "key_concepts": [
+          "Explicación del ataque Cross-Site Request Forgery y su prevención.",
+          "Rol del middleware Shield de AdonisJS.",
+          "Uso del helper '{{ csrfField() }}' en las vistas Edge para generar el token."
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Validación de Datos con VineJS",
+        "key_concepts": [
+          "Identificación de la versión del validador (VineJS para Adonis v6).",
+          "Uso de 'node ace make:validator' para crear clases validadoras.",
+          "Definición de un esquema de validación con 'vine.compile()'.",
+          "Encadenamiento de reglas de validación: string(), trim(), email(), minLength().",
+          "Uso de 'request.validateUsing()' en el controlador para ejecutar la validación."
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Feedback al Usuario con Flash Messages",
+        "key_concepts": [
+          "Explicación del comportamiento de redirección automática de AdonisJS ante un fallo de validación.",
+          "Concepto de 'Flash Messages' (datos de sesión de un solo uso).",
+          "Uso del helper global 'flashMessages' en vistas Edge para leer errores y datos antiguos.",
+          "Renderizado condicional de mensajes de error con la directiva '@if' de Edge."
+        ]
+      }
+    ],
+    "next_chapter": {
+      "id": 6,
+      "title": "Autenticación Real con Base de Datos",
+      "objective": "Verificar las credenciales del usuario contra una base de datos y gestionar su sesión.",
+      "steps": [
+        "1. Crear una migración de base de datos para la tabla 'users'.",
+        "2. Ejecutar la migración para crear la tabla.",
+        "3. Crear un Modelo 'User' de AdonisJS para interactuar con la tabla.",
+        "4. Explicar y aplicar el 'hashing' de contraseñas creando un usuario de prueba.",
+        "5. Usar 'auth.attempt()' para verificar las credenciales en el controlador.",
+        "6. Redirigir a una página protegida tras un login exitoso."
+      ]
+    }
+  }
+}

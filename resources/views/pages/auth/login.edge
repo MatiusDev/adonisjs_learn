@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-f8">
+  <title>Login</title>
+</head>
+<body>
+  <h1>Login</h1>
+
+  <form action="/login" method="POST">
+    {{ csrfField() }}
+    <div>
+      <label for="email">Email</label>
+      {{-- flashMessages es un objeto global disponible que tiene acceso a todos los datos flasheados de la sesión --}}
+      {{-- value => flashMessages.get('email') || '' => Permite rellenar el campo con el valor digitado por el usuario --}}
+      <input type="email" id="email" name="email" value="{{ flashMessages.get('email') || '' }}"  required>
+      {{-- Un if para comprobar si hay mensajes de error para el campo email --}}
+      @if(flashMessages.has('errors.email'))
+        <p style="color: red;">{{ flashMessages.get('errors.email') }}</p>
+      @endif
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+      {{-- Un if para comprobar si hay mensajes de error para el campo password --}}
+      @if(flashMessages.has('errors.password'))
+        <p style="color: red;">{{ flashMessages.get('errors.password') }}</p>
+      @endif
+    </div>
+    <button type="submit">Log In</button>
+  </form>
+</body>
+</html>
