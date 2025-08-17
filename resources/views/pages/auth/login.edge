@@ -9,26 +9,38 @@
   <h1>Login</h1>
 
   <form action="/login" method="POST">
-    {{ csrfField() }}
+    @if(typeof csrfField === 'function')
+      {{ csrfField() }}
+    @endif
     <div>
       <label for="email">Email</label>
-      {{-- flashMessages es un objeto global disponible que tiene acceso a todos los datos flasheados de la sesión --}}
       {{-- value => flashMessages.get('email') || '' => Permite rellenar el campo con el valor digitado por el usuario --}}
       <input type="email" id="email" name="email" value="{{ flashMessages.get('email') || '' }}"  required>
-      {{-- Un if para comprobar si hay mensajes de error para el campo email --}}
-      @if(flashMessages.has('errors.email'))
-        <p style="color: red;">{{ flashMessages.get('errors.email') }}</p>
-      @endif
     </div>
     <div>
       <label for="password">Password</label>
       <input type="password" id="password" name="password" required>
-      {{-- Un if para comprobar si hay mensajes de error para el campo password --}}
-      @if(flashMessages.has('errors.password'))
-        <p style="color: red;">{{ flashMessages.get('errors.password') }}</p>
-      @endif
     </div>
     <button type="submit">Log In</button>
   </form>
+
+  {{-- flashMessages es un objeto global disponible que tiene acceso a todos los datos flasheados de la sesión --}}
+  {{-- Existen dos diferencias clave entre error y errors, error contiene errores generados por excepciones y errors tiene errores de campos de formulario --}}
+  @if(flashMessages.has('error') || flashMessages.get('errors'))
+    <div style="color: red; border: 1px solid red; padding:10px; margin-bottom: 15px; margin-top: 20px;">
+      @if(flashMessages.has('error'))
+        <p>{{ flashMessages.get('error') }}</p>
+      @endif
+      {{-- Un if para comprobar si hay mensajes de error para el campo email, password o demás inputs --}}
+      @if(flashMessages.has('errors'))
+      <ul>
+          {{-- Se crea un loop para mostrar cada error que generado en cada campo --}}
+          @each(error in flashMessages.get('errors'))
+          <li>{{ error }}</li>
+          @endeach
+        </ul>
+      @endif
+    </div>
+  @endif
 </body>
 </html>
