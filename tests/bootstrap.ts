@@ -4,6 +4,7 @@ import app from '@adonisjs/core/services/app'
 import type { Config } from '@japa/runner/types'
 import { pluginAdonisJS } from '@japa/plugin-adonisjs'
 import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
+import { authApiClient } from '@adonisjs/auth/plugins/api_client'
 import testUtils from '@adonisjs/core/services/test_utils'
 
 // Registramos el plugin apiClient para realizar peticiones a nuestra app dentro de las pruebas
@@ -12,6 +13,7 @@ export const plugins: Config['plugins'] = [
   assert(),
   apiClient(),
   sessionApiClient(app),
+  authApiClient(app),
   pluginAdonisJS(app),
 ]
 

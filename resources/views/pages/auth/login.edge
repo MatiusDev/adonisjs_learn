@@ -1,46 +1,99 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-f8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
+  {{-- Vite cargará los estilos base, el layout de autenticación y los estilos específicos de login --}}
+  @vite(['resources/css/app.css', 'resources/css/auth-layout.css', 'resources/css/login.css'])
 </head>
 <body>
-  <h1>Login</h1>
 
-  <form action="/login" method="POST">
-    @if(typeof csrfField === 'function')
-      {{ csrfField() }}
-    @endif
-    <div>
-      <label for="email">Email</label>
-      {{-- value => flashMessages.get('email') || '' => Permite rellenar el campo con el valor digitado por el usuario --}}
-      <input type="email" id="email" name="email" value="{{ flashMessages.get('email') || '' }}"  required>
-    </div>
-    <div>
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit">Log In</button>
-  </form>
+  <div class="login-container">
+    
+    <!-- Columna Izquierda: Formulario -->
+    <div class="form-panel">
+      <div class="logo">Logo Here</div>
+      <p class="subtitle">Welcome back !!!</p>
+      
+      <h1>Log In</h1>
 
-  {{-- flashMessages es un objeto global disponible que tiene acceso a todos los datos flasheados de la sesión --}}
-  {{-- Existen dos diferencias clave entre error y errors, error contiene errores generados por excepciones y errors tiene errores de campos de formulario --}}
-  @if(flashMessages.has('error') || flashMessages.get('errors'))
-    <div style="color: red; border: 1px solid red; padding:10px; margin-bottom: 15px; margin-top: 20px;">
-      @if(flashMessages.has('error'))
-        <p>{{ flashMessages.get('error') }}</p>
+      {{-- Aquí mostraremos los mensajes de error de sesión --}}
+      @if(flashMessages.has('error') || flashMessages.has('errors.database'))
+        <div class="flash-messages">
+          <p>{{ flashMessages.get('error') || flashMessages.get('errors.database') }}</p>
+        </div>
       @endif
-      {{-- Un if para comprobar si hay mensajes de error para el campo email, password o demás inputs --}}
-      @if(flashMessages.has('errors'))
-      <ul>
-          {{-- Se crea un loop para mostrar cada error que generado en cada campo --}}
-          @each(error in flashMessages.get('errors'))
-          <li>{{ error }}</li>
-          @endeach
-        </ul>
-      @endif
+
+      <form action="/login" method="POST">
+        {{-- Campo CSRF --}}
+        @if(typeof csrfField === 'function')
+          {{ csrfField() }}
+        @endif
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder="login@gmail.com"
+            value="{{ flashMessages.get('email') || '' }}"
+            required
+          >
+          {{-- Mensaje de error específico para el campo email --}}
+          @if(flashMessages.has('errors.email'))
+            <div class="flash-messages" style="margin-top: 10px;">
+              <p>{{ flashMessages.get('errors.email') }}</p>
+            </div>
+          @endif
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+           {{-- Mensaje de error específico para el campo password --}}
+          @if(flashMessages.has('errors.password'))
+            <div class="flash-messages" style="margin-top: 10px;">
+              <p>{{ flashMessages.get('errors.password') }}</p>
+            </div>
+          @endif
+        </div>
+
+        <div class="forgot-password">
+          <a href="#">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn-login">
+          LOGIN
+          <span>&rarr;</span>
+        </button>
+      </form>
+
+      <div class="divider">or continue with</div>
+
+      <div class="social-logins">
+        <div class="social-icon">G</div>
+        <div class="social-icon">Gh</div>
+        <div class="social-icon">Fb</div>
+      </div>
+
+      <p class="signup-link">
+        Don't have an account yet? <a href="{{ route('register')}}">Sign up for free</a>
+      </p>
+
     </div>
-  @endif
+
+    <!-- Columna Derecha: Ilustración -->
+    <div class="illustration-panel">
+      <div class="illustration-content">
+        <!-- Aquí puedes poner tu ilustración SVG o IMG -->
+        <h2>Ilustración 3D</h2>
+        <p>Una mujer con pelo naranja en una silla usando un portátil, junto a un cactus.</p>
+      </div>
+    </div>
+
+  </div>
+
 </body>
 </html>

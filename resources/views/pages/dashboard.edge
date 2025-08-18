@@ -6,5 +6,11 @@
   </head>
   <body>
     <h1>Bienvenido, has iniciado sesión!</h1>
+    <form action="/logout" method="POST" style="margin-top: 20px;">
+      @if(typeof csrfField === 'function')
+        {{ csrfField() }}
+      @endif
+      <button type="submit">Logout</button>
+    </form>
   </body>
 </html>

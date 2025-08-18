@@ -1,0 +1,246 @@
+/* resources/css/auth-layout.css */
+
+/* --- FUENTE Y VARIABLES DE COLOR --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+  --font-family: 'Poppins', sans-serif;
+  --primary-text: #333333;
+  --secondary-text: #888888;
+  --link-text: #FE8C7A;
+  --button-gradient-start: #FF7B5F;
+  --button-gradient-end: #FEB47B;
+  --input-border: #cce7ff;
+  --illustration-bg-start: #e1e0ff;
+  --illustration-bg-end: #d3e7ff;
+  --white: #FFFFFF;
+  --light-gray: #f2f2f2;
+  --icon-bg: #f0f0f0;
+}
+
+/* --- ESTILOS BASE --- */
+body {
+  font-family: var(--font-family);
+  background-color: var(--light-gray);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--primary-text);
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.login-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 600px;
+  background-color: var(--white);
+  border-radius: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- PANEL DERECHO: ILUSTRACIÓN --- */
+.illustration-panel {
+  background: linear-gradient(to right, var(--illustration-bg-start), var(--illustration-bg-end));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* La "S-Curve" se simula con un pseudo-elemento */
+.illustration-panel::before {
+  content: '';
+  position: absolute;
+  left: -50px;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  background: var(--white);
+  border-radius: 50%;
+  z-index: -1;
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+  transform: translateX(-50%);
+}
+
+
+.illustration-content {
+  text-align: center;
+  color: var(--primary-text);
+}
+
+.illustration-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.illustration-content p {
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+}
+
+/* --- PANEL IZQUIERDO: FORMULARIO --- */
+.form-panel {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-panel .logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-panel .subtitle {
+  color: var(--secondary-text);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.form-panel h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--link-text);
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 1.5rem;
+}
+
+.forgot-password a {
+  color: var(--link-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.btn-login, .btn-signup {
+  width: 100%;
+  padding: 0.85rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right, var(--button-gradient-start), var(--button-gradient-end));
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-login:hover, .btn-signup:hover {
+  transform: scale(1.02);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--secondary-text);
+  margin: 2rem 0;
+  font-size: 0.8rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.divider:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: .25em;
+}
+
+.social-logins {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--icon-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.social-icon:hover {
+  background-color: #e0e0e0;
+}
+
+.signup-link, .login-link {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+}
+
+.signup-link a, .login-link a {
+  color: var(--link-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* --- ESTILOS PARA MENSAJES DE ERROR --- */
+.flash-messages {
+  border: 1px solid #ffb3b3;
+  background-color: #ffe6e6;
+  color: #c00;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.flash-messages ul {
+  list-style-position: inside;
+  padding-left: 0;
+}

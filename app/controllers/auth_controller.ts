@@ -2,13 +2,29 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 // Validators
 import { loginValidator } from '#validators/login'
+import { registerValidator } from '#validators/register'
 // models
 import User from '#models/user'
 
 export default class AuthController {
   // Renderizamos una vista gracias al HTTPContext y función render
-  public async showLoginForm({ view }: HttpContext) {
+  public async showLogin({ view }: HttpContext) {
     return view.render('pages/auth/login')
+  }
+
+  public async showRegister({ view }: HttpContext) {
+    return view.render('pages/auth/register')
+  }
+
+  public async register({ request, response, session, auth }: HttpContext) {
+    console.log('HEREEEEEEEEE')
+    const { fullName, email, password } = await request.validateUsing(registerValidator)
+
+    const user = await User.create({ fullName, email, password })
+    console.log('DEBUGGING RESPONSE HEADERS:', response.getHeaders())
+    await auth.use('web').login(user)
+    response.redirect().toRoute('dashboard')
+    return response
   }
 
   // Creamos una función que recibe los datos post del formulario y devolvemos como respuesta un json
@@ -32,7 +48,18 @@ export default class AuthController {
       return response.redirect().toRoute('dashboard')
     } catch (error) {
       session.flash('error', 'Las credenciales proporcionadas son incorrectas.')
-      return response.redirect('/login')
+      // console.error(error)
+      return response.redirect().toRoute('login')
     }
+  }
+
+  public async logout({ response, auth, session }: HttpContext) {
+    try {
+      await auth.use('web').logout()
+    } catch (error) {
+      session.flash('error', 'Ocurrió un error al intentar cerrar sesión')
+      console.error(error)
+    }
+    return response.redirect().toRoute('login')
   }
 }

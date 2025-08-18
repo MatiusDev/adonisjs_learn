@@ -63,9 +63,55 @@ Durante la refactorización de rutas para hacerlas más escalables, surgieron va
 ### Error 2: Rutas importadas no respetan el `.prefix()` del grupo padre
 
 *   **Síntoma:** Una ruta definida en un archivo modular (ej. `start/routes/dashboard.ts`) e importada en `start/routes.ts` dentro de un grupo con `.prefix('/dashboard')`, no era accesible en `/dashboard`, sino en `/`. Además, los métodos de redirección por nombre (`toRoute('dashboard')`) fallaban, indicando que la ruta no se registraba correctamente.
-*   **Causa:** Un conflicto de **sincronía**. Los modificadores de grupo como `.prefix()` son síncronos, pero la sentencia `import('./routes/dashboard.js')` es **asíncrona**. El prefijo se aplicaba a un grupo vacío antes de que el contenido del archivo importado tuviera la oportunidad de registrar sus rutas.
+*   **Causa:** Un conflicto de **sincronía**. Los modificadores de grupo como `.prefix()` son síncronos, pero la sentencia `import('./routes/dashboard.js')` es **asíncrona**. El prefijo se aplica a un grupo vacío antes de que el contenido del archivo importado tuviera la oportunidad de registrar sus rutas.
 *   **Solución (Patrón Canónico Descubierto):**
     1.  **En el archivo modular (`dashboard.ts`):** Envolver las definiciones de rutas en una función y exportarla por defecto. Ejemplo: `export default function dashboardRoutes() { router.get('/', ...).as('dashboard') }`.
     2.  **En el archivo principal (`routes.ts`):** Importar la función de forma síncrona al principio del archivo: `import dashboardRoutes from './routes/dashboard.js'`.
     3.  **Ejecutar la función** como callback dentro del grupo: `router.group(dashboardRoutes).prefix('/dashboard')`.
 *   **Resultado:** Este patrón asegura que las rutas se registren de forma síncrona dentro del contexto del grupo, permitiendo que los modificadores como `.prefix()` y `.use()` se apliquen de manera predecible y correcta. Es la arquitectura recomendada para enrutamiento modular en AdonisJS v6.
+
+---
+
+## Depuración de Pruebas Funcionales (Japa)
+
+Durante la implementación del logout, la suite de pruebas de autenticación falló, revelando varios matices sobre el testing en AdonisJS.
+
+### Error 1: Test de login falla al verificar la página de destino (Redirección a /login)
+
+*   **Síntoma:** Un test que hace POST a `/login` y luego GET a `/dashboard` termina en la página de `/login`.
+*   **Causa:** El cliente de API de Japa es sin estado por defecto. La cookie de sesión obtenida en la respuesta del `POST` no se envía en la petición `GET` subsecuente.
+*   **Solución:** Reestructurar los tests para que sean más atómicos y no dependan del estado entre peticiones. Usar el helper `.loginAs(user)` para probar rutas protegidas de forma aislada.
+
+### Error 2: Linter reporta que la propiedad `loginAs` no existe en `ApiRequest`
+
+*   **Síntoma:** Error de TypeScript al intentar usar `client.get('/dashboard').loginAs(user)`.
+*   **Causa:** El helper `.loginAs()` no es parte del `apiClient` base. Es una funcionalidad extendida que provee el paquete de autenticación.
+*   **Solución:** Registrar el plugin `authApiClient` en `tests/bootstrap.ts`.
+*   **Código Correcto:** `import { authApiClient } from '@adonisjs/auth/plugins/api_client'` y añadir `authApiClient(app)` al array de plugins de Japa.
+
+### Error 3: Test de ruta protegida devuelve 500 Internal Server Error
+
+*   **Síntoma:** Una petición a una ruta protegida con un usuario logueado (`.loginAs(user)`) resulta en un error 500.
+*   **Causa:** La protección CSRF está deshabilitada en el entorno de `test` (lo cual es correcto). Esto causa que el helper `csrfField()` no esté disponible en las vistas Edge. Al intentar llamarlo en la plantilla del dashboard, el motor de vistas Edge lanza un error de renderizado que resulta en un 500.
+*   **Solución:** Envolver la llamada al helper en una comprobación de existencia dentro de la plantilla Edge.
+*   **Código Correcto:** `@if(typeof csrfField === 'function') {{ csrfField() }} @endif`
+
+### Error 4: `assertStatus(302)` falla, recibiendo `200` en su lugar
+
+*   **Síntoma:** Un test que espera una redirección falla porque el status final es 200.
+*   **Causa (descubierta por el usuario):** El cliente de API de Japa sigue las redirecciones por defecto. La aserción se realiza sobre la respuesta de la página *final*, no sobre la respuesta de redirección intermedia.
+*   **Solución:** Usar el método `.redirects(0)` para instruir al cliente que no siga las redirecciones. Esto permite probar la respuesta `302` directamente. Consecuentemente, en lugar de `assertRedirectsTo()`, se debe usar una aserción de más bajo nivel para verificar la cabecera `Location`.
+*   **Código Correcto:** `response.assertStatus(302)` y `response.assertHeader('location', '/login')`.
+
+---
+
+## Depuración de Pruebas de Registro
+
+### Error: Test de registro falla con redirección inesperada y sin logs
+
+*   **Síntoma:** Un test para `POST /register` fallaba, esperando una redirección a `/dashboard` pero recibiendo una a `/`. Adicionalmente, los `console.log` colocados dentro del método del controlador no aparecían en la salida del test.
+*   **Análisis:** La ausencia de los logs fue la pista clave. Indicaba que la ejecución nunca llegaba al cuerpo del método del controlador. Esto apuntó a una falla en la barrera previa: la llamada a `request.validateUsing(validator)`.
+*   **Causa Raíz:** Una falla "silenciosa" en el validador. Un error de datos muy sutil en el test (un espacio en blanco en `password_confirmation`) causaba que la regla de validación `.confirmed()` fallara, lanzando una `ValidationException` que en el entorno de test resultaba en una redirección a `/`.
+*   **Solución y Lección Aprendida:**
+    1.  La solución inmediata fue corregir el typo en los datos del test.
+    2.  La lección de depuración más importante fue aprender a diagnosticar fallos de validación en los tests. En lugar de solo verificar la redirección, se debe inspeccionar la respuesta en busca de errores de sesión: `console.log(response.flashMessages())` o usar aserciones específicas como `response.assertSessionHasErrors()`.

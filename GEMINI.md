@@ -8,8 +8,10 @@
 
 *   **1.1. ROL DE GEMINI:** Debes actuar como un **Arquitecto de Software y Profesor**.
 *   **1.2. ROL DEL USUARIO:** El usuario actúa como un **Desarrollador** con experiencia, pero nuevo en AdonisJS.
-*   **1.3. PROHIBICIÓN DE EJECUCIÓN:** **NUNCA** debes ejecutar código o comandos por tu cuenta. El usuario es siempre quien implementa los cambios.
-*   **1.4. FLUJO DE TRABAJO OBLIGATORIO:** Nuestra interacción **SIEMPRE** debe seguir este ciclo de 6 pasos:
+*   **1.3. PROHIBICIÓN DE EJECUCIÓN:** 
+*   1.3.1. **NUNCA** debes ejecutar código o comandos por tu cuenta. El usuario es siempre quien implementa los cambios.
+*   1.3.2. Tienes **PROHIBIDO** usar herramientas como `replace` o `write_file` para alterar el código a no ser de que yo te lo pida explicítamente.
+*   **1.5. FLUJO DE TRABAJO OBLIGATORIO:** Nuestra interacción **SIEMPRE** debe seguir este ciclo de 6 pasos:
     1.  **Explicación (Arquitecto):** Explicar el concepto teórico y el objetivo práctico.
     2.  **Instrucción (Arquitecto):** Proporcionar el comando o código exacto a implementar.
     3.  **Implementación (Usuario):** El usuario aplica el cambio y notifica con la palabra "listo".
@@ -43,8 +45,12 @@
 ## 4. ESTADO Y HOJA DE RUTA
 
 *   **4.1. ESTADO ACTUAL:** **PAUSADO**
-*   **4.2. ÚLTIMA ACTIVIDAD:** Implementación de **protección de rutas con middleware** y refactorización avanzada de la organización de rutas a un patrón modular y escalable.
-*   **4.3. PRÓXIMO OBJETIVO:** Iniciar el aprendizaje sobre la **Implementación del Logout (Capítulo 10)**.
+*   **4.2. ÚLTIMA ACTIVIDAD:** Finalización del **Capítulo 11: Registro de Usuarios (Signup)**, incluyendo la implementación completa del flujo y una depuración avanzada de la suite de pruebas.
+*   **4.3. PRÓXIMO OBJETIVO:** Iniciar el **Capítulo 12: Personalización del Dashboard**.
+    *   **Plan de Acción:**
+        1.  **Pasar Datos a la Vista:** Modificar el `DashboardController` para que obtenga los datos del usuario autenticado y se los pase a la plantilla Edge.
+        2.  **Crear un Layout Base:** Para no repetir código, crearemos una plantilla "layout" principal que definirá la estructura común (ej. navbar).
+        3.  **Modificar la Vista del Dashboard:** Actualizaremos `dashboard.edge` para que "extienda" el nuevo layout y muestre la información del usuario.
 
 ---
 
@@ -55,6 +61,12 @@
     *   Aplicación del `auth` middleware a rutas y grupos.
     *   Refactorización de rutas a un patrón modular escalable, descubriendo el patrón canónico de **exportar funciones de rutas** para resolver problemas de sincronía con los modificadores de grupo.
     *   Análisis del `auth` middleware y el rol del método `ctx.auth.authenticateUsing()`.
+*   **Capítulo 10: Implementación del Logout y Refactorización de Pruebas**
+    *   Implementación de la ruta y controlador para el logout de usuario.
+    *   Uso de `POST` para la ruta de logout como mejor práctica de seguridad.
+    *   Depuración y corrección de la suite de pruebas de autenticación, aprendiendo sobre el manejo de estado, cookies y redirecciones en el `api-client` de Japa.
+    *   Introducción al helper `.loginAs()` y al plugin `authApiClient` para simplificar pruebas de rutas protegidas.
+    *   Resolución de error 500 en vistas por helpers no disponibles en entorno de test.
 
 ---
 
@@ -85,9 +97,39 @@ Esta sección registra los problemas técnicos encontrados, sus causas y las sol
 *   **Error 1: Linter reporta `Insert ..`**
     *   **Causa:** Error de formato de código (indentación/tabulación) no de lógica.
     *   **Solución:** Corregir el formato del código para cumplir las reglas de Prettier/ESLint.
-*   **Error 2: Rutas importadas no respetan el `.prefix()` del grupo.**
+*   **Error 2: Rutas importadas no respetan el `.prefix()` del grupo padre.**
     *   **Causa:** Conflicto de sincronía. `router.group().prefix()` es síncrono, mientras que `import('./file.js')` es asíncrono. El prefijo se aplica a un grupo vacío.
     *   **Solución (Patrón Canónico):** Exportar una función desde el archivo de rutas modular (`export default function...`) e importarla y ejecutarla síncronamente dentro del `router.group()`.
+
+### 6.3. Depuración de Pruebas Funcionales (Japa)
+
+*   **Error 1: Test de login falla al verificar la página de destino.**
+    *   **Causa:** El cliente de API de Japa es sin estado por defecto. Una petición `POST` a `/login` establece una sesión, pero una petición `GET` posterior a `/dashboard` no envía la cookie de sesión, resultando en una redirección de vuelta a `/login`.
+    *   **Solución:** Reestructurar los tests para que sean más atómicos. Usar el helper `.loginAs(user)` para probar rutas protegidas de forma aislada.
+*   **Error 2: Linter reporta que la propiedad `loginAs` no existe en `ApiRequest`.**
+    *   **Causa:** El helper `.loginAs()` no es parte del `apiClient` base. Es añadido por el plugin `authApiClient`.
+    *   **Solución:** Registrar el plugin en `tests/bootstrap.ts`: `import { authApiClient } from '@adonisjs/auth/plugins/api_client'` y añadir `authApiClient(app)` al array de plugins.
+*   **Error 3: Test de ruta protegida devuelve 500 Internal Server Error.**
+    *   **Causa:** La protección CSRF está deshabilitada en el entorno de `test`. Esto causa que el helper `csrfField()` no esté disponible en las vistas Edge, y al llamarlo se produce un error de renderizado en el servidor.
+    *   **Solución:** Envolver la llamada al helper en una comprobación de existencia: `@if(typeof csrfField === 'function') {{ csrfField() }} @endif`.
+*   **Error 4: `assertRedirectsTo()` no funciona como se espera.**
+    *   **Causa:** El cliente de API sigue las redirecciones por defecto. Para cuando el test recibe el control, la respuesta final es `200 OK` de la página de destino, no `302`.
+    *   **Solución:** Usar `.redirects(0)` para instruir al cliente que no siga las redirecciones. Luego, en lugar de `assertRedirectsTo()`, usar aserciones de más bajo nivel para verificar el `statusCode` y la cabecera `Location`: `response.assertStatus(302)` y `response.assertHeader('location', '/login')`.
+
+### 6.4. Frontend y Assets (Vite)
+
+*   **Concepto: Carga de Scripts en Edge con `@vite()`**
+    *   **Problema:** ¿Dónde colocar las etiquetas `<script>` (`<head>` o `<body>`) y cómo afecta al rendimiento?
+    *   **Análisis:** El helper `@vite()` en Edge genera las etiquetas `<script>` y `<link>` necesarias. Por defecto, el paquete `@adonisjs/vite` configura los scripts con el atributo `defer`.
+    *   **Solución/Mejor Práctica:** El atributo `defer` hace que el script se descargue en paralelo sin bloquear el renderizado del HTML, y se ejecute solo después de que el DOM esté listo. Por lo tanto, es seguro y recomendable colocar la llamada `@vite()` en el `<head>` del documento. La configuración se encuentra en `config/vite.ts` bajo la llave `scriptAttributes`.
+
+### 6.5. Depuración de Pruebas de Registro
+
+*   **Error: Test de registro falla con redirección inesperada y sin logs**
+    *   **Síntoma:** Un test para `POST /register` fallaba, esperando una redirección a `/dashboard` pero recibiendo una a `/`. Los `console.log` en el método del controlador no aparecían.
+    *   **Análisis:** La ausencia de logs fue la pista clave, indicando que la ejecución nunca llegaba al controlador. Esto apuntó a una falla en la barrera previa: la validación.
+    *   **Causa Raíz:** Una falla "silenciosa" en el validador. Un error de datos sutil en el test (un espacio en blanco en `password_confirmation`) causaba que la regla `.confirmed()` fallara, lanzando una `ValidationException` que en el entorno de test resultaba en una redirección a `/`.
+    *   **Solución y Lección:** La solución fue corregir el dato en el test. La lección fue aprender a usar `response.flashMessages()` y `response.assertSessionHasErrors()` para diagnosticar fallos de validación, en lugar de solo verificar la redirección final.
 
 ---
 

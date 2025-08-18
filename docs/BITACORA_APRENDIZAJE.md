@@ -49,61 +49,38 @@ El aprendizaje se basa en una colaboración entre el desarrollador y un asistent
 ### 3.1. Estado Actual de la Sesión
 
 *   **Estado:** **PAUSADO**.
-*   **Última Actividad:** Implementación de **protección de rutas con middleware** y refactorización avanzada de la organización de rutas a un patrón modular y escalable.
-*   **Próximo Objetivo:** Iniciar el aprendizaje sobre la **Implementación del Logout**.
+*   **Última Actividad:** Finalización del **Capítulo 11: Registro de Usuarios (Signup)**, incluyendo la implementación completa del flujo y una depuración avanzada de la suite de pruebas.
+*   **Próximo Objetivo:** Iniciar el **Capítulo 12: Personalización del Dashboard**.
 
 ### 3.2. Próxima Hoja de Ruta
 
-1.  **Capítulo 10: Implementación del Logout.**
+1.  **Capítulo 12: Personalización del Dashboard.**
 
 ### 3.3. Capítulos Completados (Con Descripción Detallada)
 
-*   **Capítulo 1: Introducción y Limpieza**
-    *   Análisis de la estructura de carpetas de AdonisJS (app, config, start, resources).
-    *   Lectura y modificación del archivo de rutas `start/routes.ts`.
-    *   Eliminación de archivos de vista `.edge` innecesarios.
+*   **Capítulo 11: Registro de Usuarios (Signup)**
+    *   Creación de la UI para las vistas de autenticación (login y registro) usando CSS puro.
+    *   Refactorización de CSS a un modelo modular con un layout base (`auth-layout.css`) y archivos específicos por vista.
+    *   Implementación del flujo de registro: ruta, método en controlador y validador con reglas `unique` y `confirmed`.
+    *   Implementación de auto-login después del registro para mejorar la experiencia de usuario.
+    *   **Profundización en Vite:** Análisis del helper `@vite()` de Edge, su comportamiento dual (desarrollo/producción) y el uso del atributo `defer` para carga no bloqueante de scripts.
+    *   **Depuración Avanzada de Pruebas:** Se resolvió un bug complejo en el test de registro. La lección clave fue que cuando los `console.log` no aparecen en un controlador, es una señal de que la petición está siendo detenida antes (por ejemplo, por una falla en la validación). Se aprendió a usar `response.flashMessages()` y `response.assertSessionHasErrors()` para diagnosticar estos problemas.
 
-*   **Capítulo 2: Flujo MVC Básico**
-    *   Uso de `node ace make:controller` para crear controladores.
-    *   Creación de nuevas vistas `.edge` y estructura de carpetas en `resources/views`.
-    *   Conexión de una ruta a un método específico de un controlador.
-    *   Renderizado de una vista desde un controlador usando `view.render()`.
-
-*   **Capítulo 3: Seguridad del Formulario (CSRF)**
-    *   Explicación del ataque Cross-Site Request Forgery y su prevención.
-    *   Rol del middleware Shield de AdonisJS.
-    *   Uso del helper `{{ csrfField() }}` en las vistas Edge para generar el token.
-
-*   **Capítulo 4: Validación de Datos con VineJS**
-    *   Identificación de la versión del validador (VineJS para Adonis v6).
-    *   Uso de `node ace make:validator` para crear clases validadoras.
-    *   Definición de un esquema de validación con `vine.compile()`.
-    *   Encadenamiento de reglas de validación: `string()`, `trim()`, `email()`, `minLength()`.
-    *   Uso de `request.validateUsing()` en el controlador para ejecutar la validación.
-
-*   **Capítulo 5: Feedback al Usuario con Flash Messages**
-    *   Explicación del comportamiento de redirección automática de AdonisJS ante un fallo de validación.
-    *   Concepto de "Flash Messages" (datos de sesión de un solo uso).
-    *   Uso del helper global `flashMessages` en vistas Edge para leer errores y datos antiguos.
-    *   Renderizado condicional de mensajes de error con la directiva `@if` de Edge.
-
-*   **Capítulo 6 & 7: Autenticación Real (Setup, Lógica y Depuración)**
-    *   Definición de un schema de BD con migraciones (`node ace migration:run`).
-    *   Creación de un modelo Lucid (`node ace make:model`).
-    *   Configuración del paquete de autenticación con `node ace configure adonisjs/auth`.
-    *   Uso del **mixin `withAuthFinder`** para añadir capacidades de autenticación al modelo `User`.
-    *   Comprensión de que el mixin provee tanto `User.verifyCredentials` como el hasheo automático de contraseñas, eliminando la necesidad de un hook `@beforeSave` manual.
-    *   Implementación del flujo de login en el controlador usando `User.verifyCredentials` y `auth.use('web').login(user)`.
-    *   Creación de una ruta y controlador para un `dashboard` post-login.
-
-*   **Capítulo 8: Pruebas Automatizadas para Autenticación**
-    *   Introducción a **Japa** como framework de pruebas.
-    *   Configuración del entorno de pruebas y hooks de base de datos.
-    *   Uso de **Model Factories** para generar datos de prueba.
-    *   Implementación de pruebas funcionales para el flujo de login.
-    *   Depuración profunda de errores comunes en pruebas (CSRF, redirecciones, sesión, etc.).
-
+*   **Capítulo 1-8:** Introducción, MVC, CSRF, Validación, Flash Messages, Autenticación y Pruebas Automatizadas.
 *   **Capítulo 9: Protección de Rutas con Middleware**
     *   Aplicación del `auth` middleware a rutas.
     *   Refactorización de rutas a un patrón modular escalable, usando funciones exportadas para resolver problemas de sincronía.
     *   Análisis del `auth` middleware y el método `ctx.auth.authenticateUsing()`.
+*   **Capítulo 10: Implementación del Logout y Refactorización de Pruebas**
+    *   Implementación de la ruta y controlador para el logout de usuario usando el método `POST` como mejor práctica de seguridad.
+    *   Añadido de botón de logout en la vista del dashboard.
+    *   Depuración intensiva de la suite de pruebas funcionales, descubriendo y solucionando problemas relacionados con el manejo de estado (cookies), redirecciones y configuración del entorno de pruebas en Japa.
+    *   Introducción y configuración del plugin `authApiClient` para usar el helper `.loginAs()`.
+    *   Refactorización de los tests de autenticación para ser más atómicos y robustos, diferenciando entre pruebas de comportamiento (redirección) y estado (sesión).
+*   **Capítulo 11: Registro de Usuarios (Signup)**
+    *   Creación de la UI para las vistas de autenticación (login y registro) usando CSS puro.
+    *   Refactorización de CSS a un modelo modular con un layout base (`auth-layout.css`) y archivos específicos por vista.
+    *   Implementación del flujo de registro: ruta, método en controlador y validador con reglas `unique` y `confirmed`.
+    *   Implementación de auto-login después del registro para mejorar la experiencia de usuario.
+    *   **Profundización en Vite:** Análisis del helper `@vite()` de Edge, su comportamiento dual (desarrollo/producción) y el uso del atributo `defer` para carga no bloqueante de scripts.
+    *   **Depuración Avanzada de Pruebas:** Se resolvió un bug complejo en el test de registro. La lección clave fue que cuando los `console.log` no aparecen en un controlador, es una señal de que la petición está siendo detenida antes (por ejemplo, por una falla en la validación). Se aprendió a usar `response.flashMessages()` y `response.assertSessionHasErrors()` para diagnosticar estos problemas.

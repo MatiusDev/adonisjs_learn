@@ -6,20 +6,21 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
-
+// Routes
 import dashboardRoutes from '#start/routes/dashboard'
+
+const AuthController = () => import('#controllers/auth_controller')
 
 /*
 |--------------------------------------------------------------------------
 | Rutas públicas
 |--------------------------------------------------------------------------
 */
-router
-  .group(() => {
-    router.get('/', '#controllers/auth_controller.showLoginForm')
-    router.post('/', '#controllers/auth_controller.login')
-  })
-  .prefix('/login')
+router.get('/login', [AuthController, 'showLogin']).as('login')
+router.post('/login', [AuthController, 'login'])
+
+router.get('/register', [AuthController, 'showRegister']).as('register')
+router.post('/register', [AuthController, 'register'])
 
 router.on('/').redirectToPath('/dashboard')
 
@@ -32,6 +33,7 @@ router.on('/').redirectToPath('/dashboard')
 // La función group recibe como parámetro un callback por lo que es posible desacoplarlo en otro archivo creando la función e importandola acá
 router
   .group(() => {
+    router.post('/logout', [AuthController, 'logout'])
     router.group(dashboardRoutes).prefix('/dashboard')
   })
   .use(middleware.auth())
