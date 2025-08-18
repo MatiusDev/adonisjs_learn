@@ -1,7 +1,47 @@
+
 # Diario de Depuración del Proyecto
 
 Este documento registra los problemas técnicos encontrados durante el desarrollo, las causas raíz y las soluciones aplicadas. Sirve como una base de conocimiento para errores futuros.
 
+---
+
+## Depuración de Vistas y Layouts en Edge (AdonisJS v6)
+
+### Error: Las directivas `@layout` y `@section` se muestran como texto plano en el navegador.
+
+*   **Síntoma:** Una vista de Edge que utiliza la sintaxis `@layout('layouts/app')` no se renderiza. En su lugar, el navegador muestra el código crudo de la plantilla. Pruebas más simples en la misma ruta (ej. `<h1>Hola</h1>`) sí se renderizan correctamente.
+*   **Análisis:** El problema no es del servidor ni del controlador, sino un cambio fundamental en el motor de plantillas Edge para AdonisJS v6. La sintaxis de herencia de plantillas ha cambiado.
+*   **Causa Raíz:** La directiva `@layout` ha sido **deprecada y eliminada** en favor de un sistema basado en Componentes y Slots.
+*   **Solución (Patrón Canónico v6):**
+    1.  **Crear un Componente Layout:** En lugar de un layout, se crea un componente (ej. `resources/views/components/layout/app.edge`) que contiene el HTML base.
+    2.  **Usar Slots:** Dentro del componente layout, se usan `slots` para definir las áreas de contenido inyectable. El slot principal se llama con `{{{ await $slots.main() }}}`.
+    3.  **Invocar como Componente:** Las vistas "hijas" ya no usan `@layout`. En su lugar, se utiliza la sintaxis de "componente como etiqueta" que mapea la ruta del archivo a un tag. Para un layout en `components/layout/app.edge`, la invocación es `@layout.app({ ...props })`. Luego se rellenan los slots con `@slot('nombre') ... @endslot`.
+
+*   **Código de Referencia (Layout `components/layout/app.edge`):**
+    ```html
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>{{ title }}</title>
+      {{{ await $slots.head() }}}
+    </head>
+    <body>
+      {{{ await $slots.main() }}}
+    </body>
+    </html>
+    ```
+
+*   **Código de Referencia (Vista `pages/login.edge`):**
+    ```html
+    @layout.app({ title: 'Login' })
+      @slot('head')
+        {{-- CSS específico de la página --}}
+      @endslot
+      @slot('main')
+        {{-- Contenido principal de la página --}}
+      @endslot
+    @end
+    ```
 ---
 
 ## Autenticación en AdonisJS v6 (Sesión con Lucid)

@@ -1,23 +1,5 @@
 /* resources/css/auth-layout.css */
 
-/* --- FUENTE Y VARIABLES DE COLOR --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
-:root {
-  --font-family: 'Poppins', sans-serif;
-  --primary-text: #333333;
-  --secondary-text: #888888;
-  --link-text: #FE8C7A;
-  --button-gradient-start: #FF7B5F;
-  --button-gradient-end: #FEB47B;
-  --input-border: #cce7ff;
-  --illustration-bg-start: #e1e0ff;
-  --illustration-bg-end: #d3e7ff;
-  --white: #FFFFFF;
-  --light-gray: #f2f2f2;
-  --icon-bg: #f0f0f0;
-}
-
 /* --- ESTILOS BASE --- */
 body {
   font-family: var(--font-family);

@@ -1,133 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up</title>
-  {{-- Vite cargará los estilos base, el layout de autenticación y los estilos específicos de registro --}}
-  @vite(['resources/css/app.css', 'resources/css/auth-layout.css', 'resources/css/register.css'])
-</head>
-<body>
+@layout.app({ title: 'Registrarse' })
+  @slot('head')
+    @vite(['resources/css/auth-layout.css', 'resources/css/register.css'])
+  @end
 
-  <div class="login-container">
-    
-    <!-- Columna Izquierda: Formulario -->
-    <div class="form-panel">
-      <div class="logo">Logo Here</div>
-      <p class="subtitle">Start your journey</p>
+  @slot('body')
+    <div class="login-container">
       
-      <h1>Create Account</h1>
+      <!-- Columna Izquierda: Formulario -->
+      <div class="form-panel">
+        <div class="logo">Logo Here</div>
+        <p class="subtitle">Start your journey</p>
+        
+        <h1>Create Account</h1>
 
-      @if(flashMessages.has('error') || flashMessages.has('errors.database'))
-        <div class="flash-messages">
-          <p>{{ flashMessages.get('error') || flashMessages.get('errors.database') }}</p>
-        </div>
-      @endif
-
-      <form action="/register" method="POST">
-        @if(typeof csrfField === 'function')
-          {{ csrfField() }}
+        @if(flashMessages.has('error') || flashMessages.has('errors.database'))
+          <div class="flash-messages">
+            <p>{{ flashMessages.get('error') || flashMessages.get('errors.database') }}</p>
+          </div>
         @endif
-        <div class="form-group">
-          <label for="fullName">Full Name</label>
-          <input 
-            type="text" 
-            id="fullName" 
-            name="fullName" 
-            value="{{ flashMessages.get('fullName') || '' }}"
-            placeholder="John Doe"
-            required
-          >
-          {{-- Mensaje de error específico para el campo nombre completo --}}
-          @if(flashMessages.has('errors.fullName'))
-            <div class="flash-messages" style="margin-top: 10px;">
-              <p>{{ flashMessages.get('errors.fullName') }}</p>
-            </div>
+
+        <form action="/register" method="POST">
+          @if(typeof csrfField === 'function')
+            {{ csrfField() }}
           @endif
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              value="{{ flashMessages.get('fullName') || '' }}"
+              placeholder="John Doe"
+              required
+            >
+            {{-- Mensaje de error específico para el campo nombre completo --}}
+            @if(flashMessages.has('errors.fullName'))
+              <div class="flash-messages" style="margin-top: 10px;">
+                <p>{{ flashMessages.get('errors.fullName') }}</p>
+              </div>
+            @endif
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              value="{{ flashMessages.get('email') || '' }}"
+              placeholder="your.email@example.com"
+              required
+            >
+            {{-- Mensaje de error específico para el campo email --}}
+            @if(flashMessages.has('errors.email'))
+              <div class="flash-messages" style="margin-top: 10px;">
+                <p>{{ flashMessages.get('errors.email') }}</p>
+              </div>
+            @endif
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Must be at least 8 characters"
+              required
+            >
+            {{-- Mensaje de error específico para el campo contraseña --}}
+            @if(flashMessages.has('errors.password'))
+              <div class="flash-messages" style="margin-top: 10px;">
+                <p>{{ flashMessages.get('errors.password') }}</p>
+              </div>
+            @endif
+          </div>
+
+          <div class="form-group">
+            <label for="password_confirmation">Confirm password</label>
+            <input
+              type="password"
+              id="password_confirmation"
+              name="password_confirmation"
+              placeholder="Must be at least 8 characters"
+              required
+            >
+            {{-- Mensaje de error específico para el campo confirmación de contraseña --}}
+            @if(flashMessages.has('errors.password_confirmation'))
+              <div class="flash-messages" style="margin-top: 10px;">
+                <p>{{ flashMessages.get('errors.password_confirmation') }}</p>
+              </div>
+            @endif
+          </div>
+
+          <button type="submit" class="btn-signup">
+            SIGN UP
+            <span>&rarr;</span>
+          </button>
+        </form>
+
+        <div class="divider">or sign up with</div>
+
+        <div class="social-logins">
+          <div class="social-icon">G</div>
+          <div class="social-icon">Gh</div>
+          <div class="social-icon">Fb</div>
         </div>
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email"
-            value="{{ flashMessages.get('email') || '' }}"
-            placeholder="your.email@example.com"
-            required
-          >
-          {{-- Mensaje de error específico para el campo email --}}
-          @if(flashMessages.has('errors.email'))
-            <div class="flash-messages" style="margin-top: 10px;">
-              <p>{{ flashMessages.get('errors.email') }}</p>
-            </div>
-          @endif
-        </div>
+        <p class="login-link">
+          Already have an account? <a href="{{ route('login') }}">Log In</a>
+        </p>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Must be at least 8 characters"
-            required
-          >
-          {{-- Mensaje de error específico para el campo contraseña --}}
-          @if(flashMessages.has('errors.password'))
-            <div class="flash-messages" style="margin-top: 10px;">
-              <p>{{ flashMessages.get('errors.password') }}</p>
-            </div>
-          @endif
-        </div>
-
-        <div class="form-group">
-          <label for="password_confirmation">Confirm password</label>
-          <input
-            type="password"
-            id="password_confirmation"
-            name="password_confirmation"
-            placeholder="Must be at least 8 characters"
-            required
-          >
-          {{-- Mensaje de error específico para el campo confirmación de contraseña --}}
-          @if(flashMessages.has('errors.password_confirmation'))
-            <div class="flash-messages" style="margin-top: 10px;">
-              <p>{{ flashMessages.get('errors.password_confirmation') }}</p>
-            </div>
-          @endif
-        </div>
-
-        <button type="submit" class="btn-signup">
-          SIGN UP
-          <span>&rarr;</span>
-        </button>
-      </form>
-
-      <div class="divider">or sign up with</div>
-
-      <div class="social-logins">
-        <div class="social-icon">G</div>
-        <div class="social-icon">Gh</div>
-        <div class="social-icon">Fb</div>
       </div>
 
-      <p class="login-link">
-        Already have an account? <a href="{{ route('login') }}">Log In</a>
-      </p>
-
-    </div>
-
-    <!-- Columna Derecha: Ilustración -->
-    <div class="illustration-panel">
-      <div class="illustration-content">
-        <!-- Aquí puedes poner tu ilustración SVG o IMG -->
-        <h2>Ilustración 3D</h2>
-        <p>Una mujer con pelo naranja en una silla usando un portátil, junto a un cactus.</p>
+      <!-- Columna Derecha: Ilustración -->
+      <div class="illustration-panel">
+        <div class="illustration-content">
+          <!-- Aquí puedes poner tu ilustración SVG o IMG -->
+          <h2>Ilustración 3D</h2>
+          <p>Una mujer con pelo naranja en una silla usando un portátil, junto a un cactus.</p>
+        </div>
       </div>
+
     </div>
+  @end
+@end
 
-  </div>
-
-</body>
-</html>

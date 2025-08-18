@@ -1,99 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  {{-- Vite cargará los estilos base, el layout de autenticación y los estilos específicos de login --}}
-  @vite(['resources/css/app.css', 'resources/css/auth-layout.css', 'resources/css/login.css'])
-</head>
-<body>
-
-  <div class="login-container">
-    
-    <!-- Columna Izquierda: Formulario -->
-    <div class="form-panel">
-      <div class="logo">Logo Here</div>
-      <p class="subtitle">Welcome back !!!</p>
-      
-      <h1>Log In</h1>
-
-      {{-- Aquí mostraremos los mensajes de error de sesión --}}
-      @if(flashMessages.has('error') || flashMessages.has('errors.database'))
-        <div class="flash-messages">
-          <p>{{ flashMessages.get('error') || flashMessages.get('errors.database') }}</p>
+@layout.app({ title: 'Inicio de sesión' })
+  @slot('head')
+    @vite(['resources/css/auth-layout.css', 'resources/css/login.css'])
+  @end
+  
+  @slot('body')
+    <div class="login-container">
+      <!-- Columna Izquierda: Formulario -->
+      <div class="form-panel">
+        <div class="logo">
+          Logo Here
         </div>
-      @endif
+        <p class="subtitle">
+          Welcome back !!!
+        </p>
 
-      <form action="/login" method="POST">
-        {{-- Campo CSRF --}}
-        @if(typeof csrfField === 'function')
-          {{ csrfField() }}
+        <h1>
+          Log In
+        </h1>
+
+        {{-- Aquí mostraremos los mensajes de error de sesión --}}
+        @if(flashMessages.has('error') || flashMessages.has('errors.database'))
+          <div class="flash-messages">
+            <p>
+              {{ flashMessages.get('error') || flashMessages.get('errors.database') }}
+            </p>
+          </div>
         @endif
-
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            placeholder="login@gmail.com"
-            value="{{ flashMessages.get('email') || '' }}"
-            required
-          >
-          {{-- Mensaje de error específico para el campo email --}}
-          @if(flashMessages.has('errors.email'))
-            <div class="flash-messages" style="margin-top: 10px;">
-              <p>{{ flashMessages.get('errors.email') }}</p>
-            </div>
+        
+        <form action="/login" method="POST">
+          {{-- Campo CSRF --}}
+          @if(typeof csrfField === 'function')
+            {{ csrfField() }}
           @endif
+          
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="login@gmail.com"
+              value="{{ flashMessages.get('email') || '' }}"
+              required
+            />
+            {{-- Mensaje de error específico para el campo email --}}
+            @if(flashMessages.has('errors.email'))
+              <div class="flash-messages" style="margin-top: 10px;">
+                <p>
+                  {{ flashMessages.get('errors.email') }}
+                </p>
+              </div>
+            @endif
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+            {{-- Mensaje de error específico para el campo password --}}
+            @if(flashMessages.has('errors.password'))
+              <div class="flash-messages" style="margin-top: 10px;">
+                <p>
+                  {{ flashMessages.get('errors.password') }}
+                </p>
+              </div>
+            @endif
+          </div>
+
+          <div class="forgot-password">
+            <a href="#">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="btn-login">
+            LOGIN
+            <span>&rarr;</span>
+          </button>
+        </form>
+
+        <div class="divider">
+          or continue with
         </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required>
-           {{-- Mensaje de error específico para el campo password --}}
-          @if(flashMessages.has('errors.password'))
-            <div class="flash-messages" style="margin-top: 10px;">
-              <p>{{ flashMessages.get('errors.password') }}</p>
-            </div>
-          @endif
+        <div class="social-logins">
+          <div class="social-icon">
+            G
+          </div>
+          <div class="social-icon">
+            Gh
+          </div>
+          <div class="social-icon">
+            Fb
+          </div>
         </div>
 
-        <div class="forgot-password">
-          <a href="#">Forgot Password?</a>
-        </div>
+        <p class="signup-link">
+          Don't have an account yet? <a href="{{ route('register') }}">Sign up for free</a>
+        </p>
 
-        <button type="submit" class="btn-login">
-          LOGIN
-          <span>&rarr;</span>
-        </button>
-      </form>
-
-      <div class="divider">or continue with</div>
-
-      <div class="social-logins">
-        <div class="social-icon">G</div>
-        <div class="social-icon">Gh</div>
-        <div class="social-icon">Fb</div>
       </div>
 
-      <p class="signup-link">
-        Don't have an account yet? <a href="{{ route('register')}}">Sign up for free</a>
-      </p>
-
-    </div>
-
-    <!-- Columna Derecha: Ilustración -->
-    <div class="illustration-panel">
-      <div class="illustration-content">
-        <!-- Aquí puedes poner tu ilustración SVG o IMG -->
-        <h2>Ilustración 3D</h2>
-        <p>Una mujer con pelo naranja en una silla usando un portátil, junto a un cactus.</p>
+      <!-- Columna Derecha: Ilustración -->
+      <div class="illustration-panel">
+        <div class="illustration-content">
+          <!-- Aquí puedes poner tu ilustración SVG o IMG -->
+          <h2>
+            Ilustración 3D
+          </h2>
+          <p>
+            Una mujer con pelo naranja en una silla usando un portátil, junto a un cactus.
+          </p>
+        </div>
       </div>
+
     </div>
+  @end
+@end
 
-  </div>
-
-</body>
-</html>

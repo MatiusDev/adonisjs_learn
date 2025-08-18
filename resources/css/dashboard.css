@@ -1,0 +1,297 @@
+
+/* El body del dashboard usa el por defecto de app.css */
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+/* --- Sidebar Styles --- */
+.sidebar {
+  background-color: var(--sidebar-background);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--spacing-unit) * 3);
+}
+
+.sidebar-logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  padding: var(--spacing-unit) 0;
+  margin-bottom: calc(var(--spacing-unit) * 4);
+}
+
+.nav-menu {
+  list-style: none;
+  flex-grow: 1;
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+  border-radius: calc(var(--spacing-unit) * 1.5);
+  text-decoration: none;
+  color: var(--secondary-text);
+  font-weight: 500;
+  margin-bottom: var(--spacing-unit);
+  transition: background 0.3s, color 0.3s;
+}
+
+.nav-item a:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-item.active a {
+  background: var(--accent-gradient);
+  color: var(--primary-text);
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: calc(var(--spacing-unit) * 2);
+  stroke-width: 2px;
+}
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  padding-top: calc(var(--spacing-unit) * 2);
+  border-top: 1px solid var(--border-color);
+}
+
+.sidebar-footer .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  margin-right: var(--spacing-unit);
+  /* Placeholder for 3D avatar */
+  background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
+}
+
+.sidebar-footer .user-info h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.sidebar-footer .user-info p {
+  font-size: 0.8rem;
+  color: var(--secondary-text);
+}
+
+/* --- Main Content Styles --- */
+.main-content {
+  padding: calc(var(--spacing-unit) * 4);
+  overflow-y: auto;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: calc(var(--spacing-unit) * 4);
+}
+
+.main-header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 3);
+}
+
+.search-bar {
+  position: relative;
+}
+
+.search-bar input {
+  padding: calc(var(--spacing-unit) * 1.2) calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 1.2) calc(var(--spacing-unit) * 2);
+  border-radius: var(--card-border-radius);
+  border: 1px solid var(--border-color);
+  background-color: var(--card-background);
+  min-width: 250px;
+}
+
+.search-bar .icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--secondary-text);
+}
+
+.notification-bell {
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-bell .icon {
+    width: 24px;
+    height: 24px;
+}
+
+.notification-bell .status-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-color-1);
+  border-radius: 50%;
+  border: 2px solid var(--background-main);
+}
+
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-menu .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent-color-2), var(--accent-color-1));
+}
+
+.user-menu-dropdown {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--spacing-unit);
+  background-color: var(--card-background);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  z-index: 10;
+  width: 150px;
+}
+
+.user-menu:hover .user-menu-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.user-menu-dropdown button {
+  background: none;
+  border: none;
+  color: var(--primary-text);
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+}
+
+.user-menu-dropdown button:hover {
+  background-color: #f0f0f0;
+}
+
+/* --- KPI Cards --- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: calc(var(--spacing-unit) * 3);
+  margin-bottom: calc(var(--spacing-unit) * 4);
+}
+
+.kpi-card {
+  background-color: var(--card-background);
+  padding: calc(var(--spacing-unit) * 3);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.kpi-card .icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.kpi-card .icon-wrapper svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.kpi-card .text-wrapper h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--secondary-text);
+}
+
+.kpi-card .text-wrapper .value {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: var(--spacing-unit) 0;
+}
+
+.kpi-card .text-wrapper .trend {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.trend.positive { color: #4CAF50; }
+.trend.negative { color: #F44336; }
+
+/* --- Main Chart & Bottom Cards --- */
+.main-chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: calc(var(--spacing-unit) * 3);
+}
+
+.chart-card {
+  background-color: var(--card-background);
+  padding: calc(var(--spacing-unit) * 3);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.chart-card h2 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.chart-placeholder {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-card ul {
+    list-style: none;
+}
+.list-card li {
+    padding: var(--spacing-unit) 0;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 500;
+}
+.list-card li:last-child {
+    border-bottom: none;
+}

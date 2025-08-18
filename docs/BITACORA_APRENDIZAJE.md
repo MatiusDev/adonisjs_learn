@@ -1,3 +1,4 @@
+
 # Bitácora de Aprendizaje del Proyecto
 
 Este documento sirve como la bitácora central de este proyecto de aprendizaje de AdonisJS v6. Contiene el perfil del desarrollador, la metodología de aprendizaje seguida, el estado del proyecto y la hoja de ruta.
@@ -48,15 +49,22 @@ El aprendizaje se basa en una colaboración entre el desarrollador y un asistent
 
 ### 3.1. Estado Actual de la Sesión
 
-*   **Estado:** **PAUSADO**.
-*   **Última Actividad:** Finalización del **Capítulo 11: Registro de Usuarios (Signup)**, incluyendo la implementación completa del flujo y una depuración avanzada de la suite de pruebas.
-*   **Próximo Objetivo:** Iniciar el **Capítulo 12: Personalización del Dashboard**.
+*   **Estado:** **ACTIVO**.
+*   **Última Actividad:** Finalización del **Capítulo 12: Refactorización de Vistas a Layouts de Componente**.
+*   **Próximo Objetivo:** Iniciar el **Capítulo 13: Haciendo el Dashboard Dinámico**.
 
 ### 3.2. Próxima Hoja de Ruta
 
-1.  **Capítulo 12: Personalización del Dashboard.**
+1.  **Capítulo 13: Haciendo el Dashboard Dinámico.**
 
 ### 3.3. Capítulos Completados (Con Descripción Detallada)
+
+*   **Capítulo 12: Refactorización de Vistas a Layouts de Componente**
+    *   Se rediseñó la UI del Dashboard para tener un aspecto moderno y profesional.
+    *   Se refactorizó el CSS para mover estilos globales y variables a `app.css`.
+    *   Se investigó y resolvió un problema de renderizado con las vistas de Edge.
+    *   **Descubrimiento Clave:** Se aprendió que la directiva `@layout` de AdonisJS v5 fue reemplazada en v6 por un sistema de **Componentes y Slots**. El patrón correcto es crear un componente layout (ej. `components/layout/app.edge`) y consumirlo desde las vistas hijas usando la sintaxis de "componente como etiqueta" (`@layout.app()`) y rellenando los `slots` (`@slot('main')`).
+    *   Se aplicó exitosamente el nuevo patrón de layout a todas las vistas de la aplicación (`dashboard`, `login`, `register`), logrando una base de UI consistente y reutilizable.
 
 *   **Capítulo 11: Registro de Usuarios (Signup)**
     *   Creación de la UI para las vistas de autenticación (login y registro) usando CSS puro.
@@ -66,21 +74,16 @@ El aprendizaje se basa en una colaboración entre el desarrollador y un asistent
     *   **Profundización en Vite:** Análisis del helper `@vite()` de Edge, su comportamiento dual (desarrollo/producción) y el uso del atributo `defer` para carga no bloqueante de scripts.
     *   **Depuración Avanzada de Pruebas:** Se resolvió un bug complejo en el test de registro. La lección clave fue que cuando los `console.log` no aparecen en un controlador, es una señal de que la petición está siendo detenida antes (por ejemplo, por una falla en la validación). Se aprendió a usar `response.flashMessages()` y `response.assertSessionHasErrors()` para diagnosticar estos problemas.
 
-*   **Capítulo 1-8:** Introducción, MVC, CSRF, Validación, Flash Messages, Autenticación y Pruebas Automatizadas.
-*   **Capítulo 9: Protección de Rutas con Middleware**
-    *   Aplicación del `auth` middleware a rutas.
-    *   Refactorización de rutas a un patrón modular escalable, usando funciones exportadas para resolver problemas de sincronía.
-    *   Análisis del `auth` middleware y el método `ctx.auth.authenticateUsing()`.
 *   **Capítulo 10: Implementación del Logout y Refactorización de Pruebas**
     *   Implementación de la ruta y controlador para el logout de usuario usando el método `POST` como mejor práctica de seguridad.
     *   Añadido de botón de logout en la vista del dashboard.
     *   Depuración intensiva de la suite de pruebas funcionales, descubriendo y solucionando problemas relacionados con el manejo de estado (cookies), redirecciones y configuración del entorno de pruebas en Japa.
     *   Introducción y configuración del plugin `authApiClient` para usar el helper `.loginAs()`.
     *   Refactorización de los tests de autenticación para ser más atómicos y robustos, diferenciando entre pruebas de comportamiento (redirección) y estado (sesión).
-*   **Capítulo 11: Registro de Usuarios (Signup)**
-    *   Creación de la UI para las vistas de autenticación (login y registro) usando CSS puro.
-    *   Refactorización de CSS a un modelo modular con un layout base (`auth-layout.css`) y archivos específicos por vista.
-    *   Implementación del flujo de registro: ruta, método en controlador y validador con reglas `unique` y `confirmed`.
-    *   Implementación de auto-login después del registro para mejorar la experiencia de usuario.
-    *   **Profundización en Vite:** Análisis del helper `@vite()` de Edge, su comportamiento dual (desarrollo/producción) y el uso del atributo `defer` para carga no bloqueante de scripts.
-    *   **Depuración Avanzada de Pruebas:** Se resolvió un bug complejo en el test de registro. La lección clave fue que cuando los `console.log` no aparecen en un controlador, es una señal de que la petición está siendo detenida antes (por ejemplo, por una falla en la validación). Se aprendió a usar `response.flashMessages()` y `response.assertSessionHasErrors()` para diagnosticar estos problemas.
+
+*   **Capítulo 9: Protección de Rutas con Middleware**
+    *   Aplicación del `auth` middleware a rutas.
+    *   Refactorización de rutas a un patrón modular escalable, usando funciones exportadas para resolver problemas de sincronía.
+    *   Análisis del `auth` middleware y el método `ctx.auth.authenticateUsing()`.
+
+*   **Capítulo 1-8:** Introducción, MVC, CSRF, Validación, Flash Messages, Autenticación y Pruebas Automatizadas.

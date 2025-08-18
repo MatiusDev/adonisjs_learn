@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> {{ title || 'Adonis App' }} </title>
+
+  {{-- CSS base que se cargará en todas las páginas --}}
+  @vite(['resources/css/app.css'])
+
+  {{-- Slot para assets (CSS/JS -> defer) específicos de cada página --}}
+  @if($slots.head)
+    {{{ await $slots.head() }}}
+  @endif
+</head>
+<body>
+  {{-- Slot de sección principal donde se inyecta el contenido de cada página --}}
+  {{{ $slots.body ? await $slots.body() : await $slots.main() }}}
+</body>
+</html>

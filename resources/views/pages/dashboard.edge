@@ -1,16 +1,160 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Dashboard</title>
-  </head>
-  <body>
-    <h1>Bienvenido, has iniciado sesión!</h1>
-    <form action="/logout" method="POST" style="margin-top: 20px;">
-      @if(typeof csrfField === 'function')
-        {{ csrfField() }}
-      @endif
-      <button type="submit">Logout</button>
-    </form>
-  </body>
-</html>
+{{-- Le indicamos a la vista que use app.edge como su esqueleto y indicamos el titulo que será inyectado --}}
+@layout.app({ title: 'Dashboard' })
+  @slot('head')
+    {{-- Cargamos los estilos (o algún JS) que se inyectarán en el layout app.edge como adcionales --}}
+    @vite(['resources/css/dashboard.css'])
+  @end
+
+  @slot('body')
+    <div class="dashboard-container">
+      <!-- ==================== Sidebar ==================== -->
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          Logo Here
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item active">
+            <a href="#">
+              <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#">
+              <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+              <span>Analytics</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#">
+              <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+              <span>Customers</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#">
+              <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <div class="avatar"></div>
+          <div class="user-info">
+            {{-- TODO: Reemplazar con datos del usuario --}}
+            <h4>{{ user.fullName }}</h4>
+            <p>Admin</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== Main Content ==================== -->
+      <main class="main-content">
+        <header class="main-header">
+          <h1>Dashboard</h1>
+          <div class="header-actions">
+            <div class="search-bar">
+              <input type="text" placeholder="Search...">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <div class="notification-bell">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+              <div class="status-dot"></div>
+            </div>
+            <div class="user-menu">
+              <div class="avatar"></div>
+              <div class="user-menu-dropdown">
+                <form action="/logout" method="POST">
+                  @if(typeof csrfField === 'function')
+                    {{ csrfField() }}
+                  @endif
+                  <button type="submit">Logout</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <section class="kpi-grid">
+          <div class="kpi-card">
+            <div class="icon-wrapper" style="background-color: #ffdeda;">
+              <svg style="color: #fe8c7a" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01"></path></svg>
+            </div>
+            <div class="text-wrapper">
+              <h3>Total Revenue</h3>
+              <p class="value">$54,233</p>
+              <p class="trend positive">+2.5%</p>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="icon-wrapper" style="background-color: #e6e9ff;">
+              <svg style="color: #8a9bff" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            </div>
+            <div class="text-wrapper">
+              <h3>Subscriptions</h3>
+              <p class="value">2,350</p>
+              <p class="trend positive">+10.2%</p>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="icon-wrapper" style="background-color: #d4f5f5;">
+              <svg style="color: #64c5c5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <div class="text-wrapper">
+              <h3>Avg. Session</h3>
+              <p class="value">12m 45s</p>
+              <p class="trend negative">-1.8%</p>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="icon-wrapper" style="background-color: #fff0d1;">
+              <svg style="color: #ffc65c" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+            </div>
+            <div class="text-wrapper">
+              <h3>New Customers</h3>
+              <p class="value">156</p>
+              <p class="trend positive">+5.0%</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="main-chart-grid">
+          <div class="chart-card" style="grid-column: 1 / -1;">
+              <h2>Sales Analytics</h2>
+              <div class="chart-placeholder">
+                  <svg width="100%" height="100%" viewBox="0 0 500 150" preserveAspectRatio="none">
+                      <path d="M 0 130 C 50 80, 100 120, 150 90 S 250 30, 300 80 S 400 130, 450 100 L 500 110 L 500 150 L 0 150 Z" style="stroke: #8A9BFF; fill: url(#area-gradient); stroke-width: 2;"></path>
+                      <defs>
+                          <linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#e6f0ff" stop-opacity="0.8"/>
+                          <stop offset="100%" stop-color="#f0e6ff" stop-opacity="0.2"/>
+                          </linearGradient>
+                      </defs>
+                  </svg>
+              </div>
+          </div>
+          <div class="chart-card list-card">
+              <h2>Top Products</h2>
+              <ul>
+                  <li>Product A</li>
+                  <li>Product B</li>
+                  <li>Product C</li>
+                  <li>Product D</li>
+              </ul>
+          </div>
+          <div class="chart-card">
+              <h2>Customer Demographics</h2>
+              <div class="chart-placeholder">
+                  <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                      <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e6e9ff" stroke-width="15"></circle>
+                      <circle cx="50" cy="50" r="40" fill="transparent" stroke="#ffdeda" stroke-width="15" stroke-dasharray="188.495" stroke-dashoffset="0"></circle> <!-- 75% -->
+                      <circle cx="50" cy="50" r="40" fill="transparent" stroke="#8A9BFF" stroke-width="15" stroke-dasharray="251.327" stroke-dashoffset="62.83"></circle> <!-- 25% -->
+                  </svg>
+              </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  @end
+@end

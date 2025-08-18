@@ -1,10 +1,58 @@
+/* Importación de la fuente global */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Variables de color y layout globales */
+:root {
+  /* Tipografía */
+  --font-family: 'Poppins', sans-serif;
+
+  /* Paleta Principal */
+  --primary-text: #333333;
+  --secondary-text: #757575;
+  --white: #FFFFFF;
+  --light-gray: #f2f2f2;
+  
+  /* Paleta de Acento (Auth y Dashboard) */
+  --accent-color-1: #FE8C7A;
+  --accent-color-2: #8A9BFF;
+  --link-text: #FE8C7A; /* Alias para consistencia */
+
+  /* Fondos */
+  --background-main: #F7F8FC; /* Dashboard */
+  --sidebar-background: #FFFFFF;
+  --card-background: #FFFFFF;
+  --illustration-bg-start: #e1e0ff; /* Auth */
+  --illustration-bg-end: #d3e7ff; /* Auth */
+  --icon-bg: #f0f0f0;
+
+  /* Bordes y Sombras */
+  --input-border: #cce7ff;
+  --border-color: #E0E0E0;
+  --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+
+  /* Gradientes */
+  --button-gradient-start: #FF7B5F;
+  --button-gradient-end: #FEB47B;
+  --accent-gradient: linear-gradient(135deg, #f0e6ff, #e6f0ff);
+
+  /* Layout */
+  --spacing-unit: 8px;
+  --card-border-radius: 16px;
+  --main-border-radius: 20px;
+}
+
+/* Reseteo global y estilos base */
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
   height: 100%;
   width: 100%;
+  font-family: var(--font-family);
+  color: var(--primary-text);
+  background-color: var(--light-gray); /* Un fondo base por defecto */
 }
