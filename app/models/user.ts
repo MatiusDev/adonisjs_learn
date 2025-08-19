@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-import { BaseModel, beforeSave, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column } from '@adonisjs/lucid/orm'
 
 // Mixin Authfinder, sirve para añadir el método estático verifyCredentials
 // verifyCredentials nos reduce los pasos de validar manualmente las credenciales, en su caso busca un usuario por email, hashea la password y la compara con la password hasheada en base de datos
