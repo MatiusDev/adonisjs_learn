@@ -1,8 +1,8 @@
-@layout.app({ title: 'Registrarse' })
-  @slot('head')
-    @vite(['resources/css/auth-layout.css', 'resources/css/register.css'])
-  @end
+@pushOnceTo('styles')
+  @vite(['resources/css/auth-layout.css', 'resources/css/register.css'])
+@end
 
+@layout.app({ title: 'Registrarse' })
   @slot('body')
     <div class="login-container">
       

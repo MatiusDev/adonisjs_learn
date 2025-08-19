@@ -1,8 +1,8 @@
+@pushOnceTo('styles')
+  @vite(['resources/css/auth-layout.css', 'resources/css/login.css'])
+@end
+
 @layout.app({ title: 'Inicio de sesión' })
-  @slot('head')
-    @vite(['resources/css/auth-layout.css', 'resources/css/login.css'])
-  @end
-  
   @slot('body')
     <div class="login-container">
       <!-- Columna Izquierda: Formulario -->
