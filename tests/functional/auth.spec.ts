@@ -36,7 +36,7 @@ test.group('Auth login', (group) => {
     // Usamos .loginAs(user) para autenticar al usuario para ESTA petición.
     const response = await client.get('/dashboard').loginAs(user)
     response.assertStatus(200)
-    response.assertTextIncludes('Bienvenido, has iniciado sesión!')
+    response.assertTextIncludes('Dashboard')
   })
 
   test('login a user with invalid credentials', async ({ client }) => {

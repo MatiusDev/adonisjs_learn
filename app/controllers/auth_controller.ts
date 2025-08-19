@@ -17,11 +17,9 @@ export default class AuthController {
   }
 
   public async register({ request, response, auth }: HttpContext) {
-    console.log('HEREEEEEEEEE')
     const { fullName, email, password } = await request.validateUsing(registerValidator)
 
     const user = await User.create({ fullName, email, password })
-    console.log('DEBUGGING RESPONSE HEADERS:', response.getHeaders())
     await auth.use('web').login(user)
     response.redirect().toRoute('dashboard')
     return response
