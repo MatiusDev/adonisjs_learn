@@ -9,9 +9,13 @@
   @vite(['resources/css/app.css'])
 
   {{-- Slot para assets (CSS/JS -> defer) específicos de cada página --}}
-  @if($slots.head)
-    {{{ await $slots.head() }}}
-  @endif
+  {{-- @if($slots.head)
+    {{-- {//{//{ await $slots.head() }}} --}}
+  @endif --}}
+
+  {{-- La implementación anterior se hace por slots, sin embargo, esto hace que no se puedan pasar estilos de componentes hijos mucho más anidados que los hijos de primer grado --}}
+  {{-- Reemplazamos la implementación usando stack donde haremos push de los estilos hasta este nivel --}}
+  @stack('styles')
 </head>
 <body>
   {{-- Slot de sección principal donde se inyecta el contenido de cada página --}}

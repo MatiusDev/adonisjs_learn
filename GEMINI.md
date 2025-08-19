@@ -48,8 +48,8 @@
 ## 4. ESTADO Y HOJA DE RUTA
 
 *   **4.1. ESTADO ACTUAL:** **ACTIVO**
-*   **4.2. ÚLTIMA ACTIVIDAD:** Finalización del **Capítulo 12: Refactorización de Vistas a Layouts de Componente**.
-*   **4.3. PRÓXIMO OBJETIVO:** Iniciar el **Capítulo 13: Haciendo el Dashboard Dinámico**.
+*   **4.2. ÚLTIMA ACTIVIDAD:** Refactorización del Sidebar a un componente modular y definición del nuevo objetivo del proyecto (App de Clínica).
+*   **4.3. PRÓXIMO OBJETIVO:** Iniciar el **Capítulo 13: Construyendo los Cimientos: Modelos y Migraciones para la Clínica**.
 
 ---
 

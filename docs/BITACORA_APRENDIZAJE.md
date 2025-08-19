@@ -59,6 +59,12 @@ El aprendizaje se basa en una colaboración entre el desarrollador y un asistent
 
 ### 3.3. Capítulos Completados (Con Descripción Detallada)
 
+*   **Capítulo 12.5: Refactorización del Sidebar a Componente Modular**
+    *   Se desacopló el HTML del sidebar del dashboard a su propio archivo de componente en `components/shared/sidebar.edge`.
+    *   Se aprendió a pasar datos (el objeto `user`) desde una vista padre a un componente hijo a través de `props`.
+    *   Se exploró y aplicó el concepto de **Stacks** de Edge.js para permitir que un componente hijo inyecte sus dependencias de CSS (`@pushOnceTo('styles')`) en el `<head>` del layout principal (`@stack('styles')`), logrando una componentización verdaderamente modular.
+
+
 *   **Capítulo 12: Refactorización de Vistas a Layouts de Componente**
     *   Se rediseñó la UI del Dashboard para tener un aspecto moderno y profesional.
     *   Se refactorizó el CSS para mover estilos globales y variables a `app.css`.
