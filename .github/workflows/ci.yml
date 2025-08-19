@@ -11,25 +11,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-  # Inicia un servicio de PostgreSQL
-  services:
-    # Le pedimos a github que inicie un contendor docker con la imagen de postgres
-    postgres:
-      image: postgres:14.1-alpine
-      # Configuramos el nombre las credenciales de la BD en el contenedor
-      env:
-        POSTGRES_DB: adonis_test
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: password
-      ports:
-        - 5432:5432
-      # Opción para asegurar que el servicio esté listo antes de continuar
-      options: >-
-        --health-cmd pg_isready
-        --health-interval 10s
-        --health-timeout 5s
-        --health-retries 5
+    # Inicia un servicio de PostgreSQL
+    services:
+      # Le pedimos a github que inicie un contendor docker con la imagen de postgres
+      postgres:
+        image: postgres:14.1-alpine
+        # Configuramos el nombre las credenciales de la BD en el contenedor
+        env:
+          POSTGRES_DB: adonis_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        # Mapeando el puerto del contenedor
+        ports:
+          - 5432:5432
+        # Opción para asegurar que el servicio esté listo antes de continuar
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout repository
