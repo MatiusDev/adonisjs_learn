@@ -62,6 +62,10 @@
     *   **Descubrimiento Clave:** Se aprendió que la directiva `layout` de AdonisJS v5 fue reemplazada en v6 por un sistema de **Componentes y Slots**. El patrón correcto es crear un componente layout (ej. `components/layout/app.edge`) y consumirlo desde las vistas hijas usando la sintaxis de "componente como etiqueta" (`layout.app()`) y rellenando los `slots` (`slot('main')`).
     *   Se aplicó exitosamente el nuevo patrón de layout a todas las vistas de la aplicación (`dashboard`, `login`, `register`), logrando una base de UI consistente y reutilizable.
 *   **Capítulo 1-11:** Introducción, MVC, CSRF, Validación, Flash Messages, Autenticación, Pruebas Automatizadas y Registro de Usuarios.
+*   **Capítulo 13: Construyendo los Cimientos: Modelos y Migraciones para la Clínica**
+    *   Se crearon los modelos y migraciones para las entidades `Doctor`, `Patient` y `Appointment`.
+    *   Se definió el esquema de las tablas en la base de datos usando el Schema Builder de Lucid.
+    *   Se establecieron las relaciones `belongsTo` y `hasMany` en los modelos para mapear la estructura de la base de datos.
 
 ---
 

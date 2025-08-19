@@ -1,4 +1,3 @@
-
 # Bitácora de Aprendizaje del Proyecto
 
 Este documento sirve como la bitácora central de este proyecto de aprendizaje de AdonisJS v6. Contiene el perfil del desarrollador, la metodología de aprendizaje seguida, el estado del proyecto y la hoja de ruta.
@@ -41,7 +40,7 @@ El aprendizaje se basa en una colaboración entre el desarrollador y un asistent
 
 ### 2.2. Objetivo Principal
 
-*   **Meta:** Construir una aplicación web completa y funcional, comenzando por un sistema robusto de login y autenticación de usuarios.
+*   **Meta:** Construir una aplicación web completa para la **gestión de una clínica**, incluyendo CRUDs para Pacientes, Doctores y Citas.
 
 ---
 
@@ -49,15 +48,22 @@ El aprendizaje se basa en una colaboración entre el desarrollador y un asistent
 
 ### 3.1. Estado Actual de la Sesión
 
-*   **Estado:** **ACTIVO**.
-*   **Última Actividad:** Finalización del **Capítulo 12: Refactorización de Vistas a Layouts de Componente**.
-*   **Próximo Objetivo:** Iniciar el **Capítulo 13: Haciendo el Dashboard Dinámico**.
+*   **Estado:** **PAUSADO**.
+*   **Última Actividad:** Finalización del **Capítulo 13: Construyendo los Cimientos: Modelos y Migraciones para la Clínica**.
+*   **Próximo Objetivo:** Iniciar el **Capítulo 14: CRUD de Doctores - Listado y Creación**.
 
 ### 3.2. Próxima Hoja de Ruta
 
-1.  **Capítulo 13: Haciendo el Dashboard Dinámico.**
+1.  **Capítulo 14: CRUD de Doctores - Listado y Creación**.
 
 ### 3.3. Capítulos Completados (Con Descripción Detallada)
+
+*   **Capítulo 13: Construyendo los Cimientos: Modelos y Migraciones para la Clínica**
+    *   Se cambió el objetivo del proyecto a una aplicación de gestión de clínica.
+    *   Se crearon los modelos (`Doctor`, `Patient`, `Appointment`) y sus correspondientes migraciones con el comando `node ace make:model <nombre> -m`.
+    *   Se aprendió a definir la estructura de las tablas usando el Schema Builder de Lucid dentro del método `up()` de las migraciones.
+    *   Se corrigió y aprendió la sintaxis canónica para definir claves foráneas en Lucid v6, incluyendo `.unsigned()`, `.references()`, `.inTable()` y `.onDelete('CASCADE')`.
+    *   Se definieron las relaciones `belongsTo` y `hasMany` en los modelos de Lucid para reflejar la lógica del negocio y facilitar las consultas a la base de datos.
 
 *   **Capítulo 12.5: Refactorización del Sidebar a Componente Modular**
     *   Se desacopló el HTML del sidebar del dashboard a su propio archivo de componente en `components/shared/sidebar.edge`.

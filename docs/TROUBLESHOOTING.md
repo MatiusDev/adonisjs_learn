@@ -1,7 +1,25 @@
-
 # Diario de Depuración del Proyecto
 
 Este documento registra los problemas técnicos encontrados durante el desarrollo, las causas raíz y las soluciones aplicadas. Sirve como una base de conocimiento para errores futuros.
+
+---
+
+## Depuración de Migraciones y Claves Foráneas (Lucid)
+
+### Error: Sintaxis de Clave Foránea (Foreign Key) obsoleta o incorrecta.
+
+*   **Síntoma:** Una migración que intenta crear una clave foránea no funciona como se espera, o la restricción no se crea en la base de datos. El uso de una sintaxis como `table.foreign('patient_id', 'patients').references('id')` es incorrecta para la versión actual de Lucid.
+*   **Análisis:** La API del Schema Builder de Lucid para definir claves foráneas es muy específica y requiere un encadenamiento de métodos claro para funcionar correctamente.
+*   **Causa Raíz:** Uso de una sintaxis de una versión anterior de AdonisJS o una interpretación incorrecta de la documentación de la v6.
+*   **Solución (Patrón Canónico v6):** La forma correcta de definir una clave foránea es crear primero la columna y luego encadenar los métodos de restricción.
+    ```typescript
+    // Dentro del método up() de la migración
+    table.integer('patient_id') // 1. Crea la columna que almacenará la clave foránea.
+      .unsigned() // 2. MUY IMPORTANTE: La columna debe ser sin signo, ya que hará referencia a una columna `id` que es `unsigned serial`.
+      .references('id') // 3. Especifica la columna a la que se hace referencia en la tabla padre.
+      .inTable('patients') // 4. Especifica la tabla padre.
+      .onDelete('CASCADE') // 5. (Opcional pero recomendado) Define el comportamiento al borrar. CASCADE borra este registro si el padre es eliminado.
+    ```
 
 ---
 
